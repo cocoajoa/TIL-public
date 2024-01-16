@@ -78,10 +78,22 @@
   ```python
   할 수 있는 방법은 찾았는데 나중에 배우는거라 후순위로..
   ```
-![이미지](TIL-public\image.bird.jpg)
+![이미지](bird.jpg)
 
 - print enter 줄간격 마다 \ 자동으로 인식하는 방법이 뭘까
 
-- ctrl / 하면 주석 온 오프, 그러면 ''나 () 만드는 법이 있지 않을까
+- ctrl / 하면 주석 온 오프, 그러면 ''나 () 만드는 법이 있지 않을까  
 
-        
+- 
+  ```python
+  my_dict = {'apple': 12, 'list': [1, 2, 3]}
+  print(my_dict['apple'])
+  ```
+왜 대괄호?
+
+- 
+  ```python 
+  my_dict_3 = {'apple': 12, 'list': [1, 2, 3], 'apple':100}
+  print(my_dict_1) # 1{'apple': 100, 'list': [1, 2, 3]}
+  ```
+순서가 존재하지 않은데 왜 나중에 있는걸로 나오는거지?
