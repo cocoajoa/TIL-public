@@ -93,16 +93,10 @@
 
 ----------------------------
 
-
 - print enter 줄간격 마다 \ 자동으로 인식하는 방법이 뭘까
 
 
-- 
-  ```python
-  my_dict = {'apple': 12, 'list': [1, 2, 3]}
-  print(my_dict['apple'])
-  ```
-왜 대괄호?
+
 
 - 
   ```python 
