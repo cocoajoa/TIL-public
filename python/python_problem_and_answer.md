@@ -178,3 +178,20 @@ def func(pos1, pos2,age=30, *args, **wargs):
 func(1,2,'',4,5)
 
 함수는 하나의 기능만 하도록 만들기 / 여러 기능을 다 할 수 있는 애는 별로 안좋은 함수
+
+pprint가 뭐지
+
+import한 모듈 빼버리는 법
+from pprint import pprint as print # pprint가 뭐지
+
+
+my_dict = {
+    'x' : 10, 
+    'y' : 20, 
+    'z' : 20
+    }
+for key in my_dict:
+    print(key)             # key가 나옴
+    print(my_dict[key])    # key의 값이 나옴 for 구문 아니더라도 나오게 하는 법?
+
+- python에서 한줄은 97자로 제한이 관행이면 97자인지 아닌지는 느낌으로?
