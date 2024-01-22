@@ -195,3 +195,36 @@ for key in my_dict:
     print(my_dict[key])    # key의 값이 나옴 for 구문 아니더라도 나오게 하는 법?
 
 - python에서 한줄은 97자로 제한이 관행이면 97자인지 아닌지는 느낌으로?
+
+- .capitalize()를 활용시 문자열에 '.'이 있으면 그 다음 글자도 대문자로 만들 수 없나?
+.capitalize('.')는 안됨. split 처럼 되는 줄 알았는데 흠..
+
+```python 
+def capitalize_words(words):
+    split_words = words.split()
+    words_list = []
+    for word in split_words:
+        capital_word = word.capitalize()
+        words_list.append(capital_word)
+    sentence = ' '.join(words_list)
+    return sentence
+
+result = capitalize_words("hello, world!")
+print(result) # Hello, World!
+```
+말고 내부함수로는 불가능한것일까?
+
+
+
+
+- list안의 정수 개수나 문자열 개수 확인하는 법은??
+```python
+my_list = [1, 2, 2, '3', 3, 3]
+count = my_list.count(int) #(int)는 작동 안함
+print(count) # 
+
+```
+
+- .count() 함수에 'a'를 넣으면 대문자 A도 같이 count하게 만드는 법
+
+- for 구문 돌떄 in 다음에 있는 부분의 길이를 조작하면 안됨 꼬임
