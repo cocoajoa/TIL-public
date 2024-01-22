@@ -76,7 +76,7 @@
 
         find . -type d -empty -exec touch {}/.gitkeep \;
 
-![이미지](TIL-public\image.bird.jpg) 
+![이미지](bird.jpg) 
 
 # 2024-01-15
 
@@ -194,16 +194,40 @@ stack overflow에 markdown no bodrders 관한 질문은 있는데 보통 없애�
 - python에서 주석 키 말고 이 단축키들처럼 ()나 []를 씌울 수 있는 건 없나 찾아봤는데, 별도로 내장된 건 없던 걸 알게됨..  
 
 -------------------------
+2024-01-22 
+
+1. 2-1. 이런거는 마크다운에서 1. 과 - 처럼 사용 못하나??
+
+- 실패 
+
+        흠 다 안됨 2\-1. 나 2\-\1.로 구성을 해봐도 안됨.
+
+- 성공?
+
+        stack overflow왈 markdown 단독으로 사용시는 불가능하고 HTML을 이용하면 된다고한다.
+        HTML의 경우 아직 배우지 않아서 나중에 적용해보기로
+        내용 찾은 주소는 https://stackoverflow.com/questions/40120050/automatically-number-sections-in-rmarkdown
+
+![이미지](bird.jpg) 
+
+1. git에서 관리하는 폴더 내에서 이미지 갖고오는법?
+
+   !\[이미지](TIL-public\image\bird.jpg) 
+- 실패
+      
+        위와 같이 폴더 주소로는 안된다. 
+        로컬 주소로는 다른 컴퓨터에서 적용이 안되기 때문에  
+        결국 이미지가 필요한 폴더 안에 이미지를 넣거나 인터넷 주소 링크하지 않으면 안되는 것 같다.
+
+- 성공?
+
+        결국 이전에 배운대로 같은 폴더에 넣어서 적용함
+        https://stackoverflow.com/questions/41604263/how-do-i-display-local-image-in-markdown
 
 
-
-- 2-1. 이런거는 마크다운에서 1. 과 - 처럼 사용 못하나??
- 
 - 마크다운 글자를 중간에 위치하게 만드는 법
 - 탭키 연타 사용시 생기는 코드블럭의 정체??? 일반적으로 사용하는 \``````의 경우 사이에 python or C등 원하는 프로그래밍 언어를 넣으면 그 언어대로 안의 글자들이 인식하는데 
 
-- git에서 관리하는 폴더 내에서 이미지 갖고오는법?
-   ![이미지](TIL-public\image.bird.jpg) 
 
 
  ctrl + \ 
