@@ -92,20 +92,29 @@
    ctrl + shift + R 원하는 걸 선택 후 몇 가지로 감쌀 수 있음 ~~이렇게~~
 
 ----------------------------
+# 2024-01-23
 
-- print enter 줄간격 마다 \ 자동으로 인식하는 방법이 뭘까
+~~print enter 줄간격 마다 \ 자동으로 인식하는 방법이 뭘까~~
+<- 쓸 일이 많이 없다는 걸 알게 되었다.
 
-
-
-
-- 
+1.  아래 순서가 존재하지 않은데 왜 나중에 있는걸로 나오는거지?
   ```python 
-  my_dict_3 = {'apple': 12, 'list': [1, 2, 3], 'apple':100}
-  print(my_dict_1) # 1{'apple': 100, 'list': [1, 2, 3]}
+  my_dict = {'apple': 12, 'list': [1, 2, 3], 'apple':100}
+  print(my_dict) # 1{'apple': 100, 'list': [1, 2, 3]}
   ```
-순서가 존재하지 않은데 왜 나중에 있는걸로 나오는거지?
-
-
+- 이해<br /> 
+  pyhton 3.7서부터는 dictionary는 삽입순서를 기억한다.<br />
+  그래서 key 값 기준으로 나열되고, value는 뒤에 동일한 key가 나오면 값이 덮어쓰기되는 듯 
+  - python document 
+    - Changed in version 3.7: Dictionaries did not preserve insertion order in versions of Python before 3.6. In CPython 3.6, insertion order was preserved, but it was considered an implementation detail at that time rather than a language guarantee.
+  
+  - stackoverflow
+    - 삽입순서를 기억하기에 .popitem()으로 마지막 값을 반환할 수 있다. LIFO(후입선출) 
+      - 그럼 맨 앞을 반환하는 법은 없나?
+        - 그런 건 없없다. .popitme(Last=False)된다는 사람도 있다는데 안됨.  
+      - 삽입 순서 기억하는 이유?
+        - 3.6 까지는 개발자가 입력한 key와 dictionary가 hash 문자열 처럼 random하게 나와 불편한 점이 있었다고 한다. dictionary가 nonsequence로 순서가 없는 것은 이전과 동일하지만 key의 삽입 순서는 기억하게 만든건 개발 편의성을 위함 
+------------------------------
 
 - 아래처럼 만들기, print시 key 부분 '' 없이 나오고, {} 없애고, 객체 마다 줄 띄우는 법?? 
 ```python
