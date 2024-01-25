@@ -204,7 +204,7 @@ print(example_sentence) # Hello. my name is kim. how are you? I'm fine. thank yo
 
 아직 for 구문과 sequence, iterable이라는 걔념들이 완전히 머릿속에 박히지 않아서 생각도 안남  
 
-# 2024-01
+# 2024-01-25
 
 1. 어제의 4. 여러 문장을 받을때 ?,!,.을 받으면 그 다음 문자를 대문자화하는 법
 
@@ -287,23 +287,31 @@ GPT가 도와준 다른 걔념, index로 문자열에 개입하려는 방법이 
 꺼둔 스위치가 ?,!,.을 만나게 된다면 켜지고, 순환하는 문자가 알파벳이면 대문자로 만들고 스위치를 끄는 걸 반복한다.
 
 - 두번째 방법
+[stackoverflow에 올린 질문에 올라간 답들](https://stackoverflow.com/questions/77871590/how-to-capitalize-sentences-consisting-of-and-punctuation-at-once?noredirect=1#comment137283745_77871590)
+
+      import re를 사용하는 두가지 방법인데 아직 안익숙한 lamda 함수랑 모듈에 대해서 나중에 공부해서 오기
+![앵무](bird.jpg)
+
+
+
+2. python에서 한줄은 79자로 제한이 관행이면 79자인지 아닌지는 느낌으로?
+[python 코드 스타일 가이드](https://peps.python.org/pep-0008/)
+- 안 사실
+
+      내가 생각한 편리한 기능은 없다. 다만 79자로 제한하는 것은 생각보다 중요한 것을 알게되었다.
+      stackoverflow에서 관련된 글을 보았는데 
+      80자 이상으로 넘어가면 기능을 못하게 되는 것들도 더러 있다고 한다.. 
 
 
 
 
 
 
-- python에서 한줄은 97자로 제한이 관행이면 97자인지 아닌지는 느낌으로?
-
-
-- .capitalize()를 활용시 문자열에 '.'이 있으면 그 다음 글자도 대문자로 만들 수 없나?
-.capitalize('.')는 안됨. split 처럼 되는 줄 알았는데 흠..
 
 
 
 
-
-
+-----------------------------------------------
 - list안의 정수 개수나 문자열 개수 확인하는 법은??
 ```python
 my_list = [1, 2, 2, '3', 3, 3]
@@ -311,10 +319,6 @@ count = my_list.count(int) #(int)는 작동 안함
 print(count) # 
 
 ```
-
-
-
-
 
 - .count() 함수에 'a'를 넣으면 대문자 A도 같이 count하게 만드는 법
   isdecimal과 같은 것이 있을지도
