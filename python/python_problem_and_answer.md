@@ -203,25 +203,90 @@ print(example_sentence) # Hello. my name is kim. how are you? I'm fine. thank yo
 문자열은 sequence라 for 구문을 사용할 수 있다는 점을 활용하는 것이라고 한다.
 
 아직 for 구문과 sequence, iterable이라는 걔념들이 완전히 머릿속에 박히지 않아서 생각도 안남  
-  
+
+# 2024-01
+
+1. 어제의 4. 여러 문장을 받을때 ?,!,.을 받으면 그 다음 문자를 대문자화하는 법
+
+- 두번째 실패
+
 ``` python
-# 빈 문자열을 먼저 만들고
-# 여기에 조건을 만족하는 모든 문자열을 계속 연결
 
+example = "hello. my name is kim. how are you? i'm fine. thank you." 
+# 최종 결과를 담을 문장 객체
 result = ''
-for char in example_sentence:
-    # 공백이라면 공백을 넣고 다음 수는 대문자로 바꿔서 넣는다.
-    result += char
 
+# 맨 앞자리 대문자로 만들어 미리 넣어 놓기
+result = example[0].capitalize() 
 
+# 맨 뒷자리 '.'으로 인해 아래 순환에 방해되지 않게 미리 잘라 놓기
+example_sliced = example[:-1] # hello. my name is kim. how are you? i'm fine. thank you
 
+# 순환시킬 문자열의 index 값을 count해주는 counter, 
+# 1인 이유는 첫번째 단어는 이미 최종문장에 넣어놓았기에 
+# 순환은 0이 아니라 1부터 시작할 예정 
+sentence_index = 1
 
+# 첫 단어는 이미 넣어놨으니 두번째 문자부터 순환
+for char in example_sliced[1::]:
+   
+    # punctuation, ?, !를 만나면
+    if char == '.' or char == '?' or char == '!' :
+        # 순환하는 문자 이후 2번째 순서에 있는 단어를 대문자화
+        print(char)
+        example_sliced[sentence_index + 2].capitalize()    
+    
+    #인자를 최종 문장에 넣고 index counter를 증가시킨다.
+    result = result + char 
+    sentence_index += 1  
 
-
-
-
-
+print(result) #Hello. my name is kim. how are you? i'm fine. thank you
 ```
+실패한 이유는 **example_sliced[sentence_index + 2].capitalize()**가 안돌아간다.<br>
+문자열은 불변이라는 점을 망각해서 발생함
+
+- 첫번째 방법(feat.gpt)
+```py
+example = "hello. my name is kim. how are you? i'm fine. thank you." 
+# 최종 결과를 담을 문장 객체
+result = ''
+
+# 맨 앞자리 대문자로 만들어 미리 넣어 놓기
+result = example[0].capitalize()
+
+# 아래 사용할 스위치
+capital_boolean = False
+
+# 첫 단어는 이미 넣어놨으니 두번째 부터 순환
+for char in example[1::]:
+    
+    # 스위치가 True일때이고 해당 인자가 알파벳이면
+    if capital_boolean and char.isalpha():
+        
+        # 대문자로 바꾸어서 최종 문장에 넣는다
+        result += char.capitalize() 
+        
+        # 스위치는 끈다.
+        capital_boolean = False
+
+    else:
+        #아니면 그대로 인자를 최종 문장에 넣는다.
+        result += char 
+
+    # punctuation이나 ? !를 만나면
+    # if char == '.' or char == '?' or char == '!': 좀더 축약해보자
+    if char in ('.', '?', '!'):
+        #스위치를 켠다.
+        capital_boolean = True
+      
+
+print(result) #Hello. My name is kim. How are you? I'm fine. Thank you.
+```
+GPT가 도와준 다른 걔념, index로 문자열에 개입하려는 방법이 아니라 스위치를 이용하는 방법<br> 
+
+꺼둔 스위치가 ?,!,.을 만나게 된다면 켜지고, 순환하는 문자가 알파벳이면 대문자로 만들고 스위치를 끄는 걸 반복한다.
+
+- 두번째 방법
 
 
 
@@ -257,3 +322,5 @@ print(count) #
 
 - for 구문 돌떄 in 다음에 있는 부분의 길이를 조작하면 안됨 꼬임
 내용 옮기기
+
+- .super() 쓸때 상위 클래스 중 우측것이 필요할때는?
