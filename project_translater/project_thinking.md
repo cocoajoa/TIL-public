@@ -1,5 +1,5 @@
 # vscode extension을 만드는 법은? 
-chatGPT와 vscode 공식 doucmention을 주로 참고하여 만들어보자
+chatGPT와 vscode 공식 documentation을 주로 참고하여 만들어보자
   
 1. node.js 와 Git 준비 필요함
    - git은 준비됬지만 node는 준비가 안되어있다.
@@ -20,7 +20,7 @@ chatGPT와 vscode 공식 doucmention을 주로 참고하여 만들어보자
 <br /><br />
 
 3. -yo code로 만들 것 설정하기?  
-   - 실행 시 yeoman을 통해 다양한 방식의 기본 extenstion을 고를 수 있다.
+   - 실행 시 yeoman을 통해 다양한 방식의 기본 extension을 고를 수 있다.
      - New Extension (TypeScript or JavaScrpit) 등등 
    - 내가 원하는 건 자동으로 한국어 맞춤법가 표시되는 것인데 무엇을 선택해야할까?
      - 제일 그럴듯해보이는 건 언어이기에 New Language Support와 New Language Pack (Localization)
@@ -62,4 +62,38 @@ chatGPT와 vscode 공식 doucmention을 주로 참고하여 만들어보자
  
 ### 새로운 dictionary 만들기
 1. Pnpm 설치 / npm install -g pnpm
-  - npm 과는 다르다하니 설치   
+  - npm 과는 다르다하니 설치 
+2. pnpm create-dictionary 로 ko_KR 폴더 만들기  
+   1. 소스 사전은 무엇을 입력하면 될까?
+     - 알아보니 aff 파일은 문법 규칙을 의미하고 dic은 사전을 의미하니, korean.dic을 입력하면 되지 않을까? 
+       - aff는 어떻게 연결해야할까, 수동으로 넣어서 입력하면 될까나
+3. 다른 나라 폴더와 비교하기
+   - 나라마다 살짝씩 다 달라서 무얼 기준으로 해야할지 너무 힘들다..
+     - ID 인도네시아가 좀 간단한 것 같아서 기준으로 비교함
+
+  1. checksum.txt 어디서 얻는 것일까?
+     - checksum.txt는 파일의 무결성을 확인하기 위해 만드는 것이라고 한다. 파일에 문제가 있는지 없는지를 확인하기 위한 것일듯
+       - 내가 만드는 것일까?
+         - 아닌 것 같다. 만드는 방법들을 확인해보았는데 자신의 c드라이브 주소를 값에 넣는 것을 확인하였다.. 다른 사람들의 컴퓨터의 경우 동일한 환경이 아니기에 자동적으로 만들어지는 것으로 추측되니 따로 만들지 않고 패스?
+         - aff 파일이 기록된 곳이 checksum.txt 밖에 없는데 만들어야되는 건가????? 
+           - 일단 안만든 프로토타입으로 시도해보기
+  2. cspell-tools.config.yaml 수정
+      - 독일어와 같이 수정 
+        - 타겟으로 하는 dictionary 구조가 ID보단 독일에 더 비슷하게 생김, src/hunspell/index.dic 과 src/korean.dic 가 동일하지만 굳이 넣는건 이유가 있지 않을까??
+  3. package.json debug 부분 수정?
+      - 독일어와 ID 둘다 전혀 다르게 구성되어있음. dictionary 구조가 유사한 독일어 기준으로 수정함
+
+#### dictionary 만들기 문제 봉착
+- 다른 나라 보고 따라 만든 이후 Smoke test를 진행하려했는데 안됨.. 작동을 안한다.. 무엇이 문제일까?
+  1. checksum.txt가 없어서?
+     - 아무리 봐도 문법을 담당하는 aff 파일은 여기에만 적혀있다. 그냥 내가 따로 만들어야되나.
+  2. .trie.gz 직접 수정해야되나?
+     - 아무리 봐도 작동을 하면 알아서 되는 것같은데.. 
+
+  
+  3. 알려준 cspell 문법이 안통함, 휴..
+     1. cspell check README.md --locale=en,es
+        - 로케일 부분을 kr, ko_kr, en,kr 등등 여러 번 시도했는데 작동을 안함, 하도 안되서 다른 나라걸로 해도 안됨. 날 속인거니..?
+     2. cspell link remove ./cspell-ext.json (해결)
+        - 연습이 끝나면 지우라는데 저 방식대로는 안지워짐
+        - remove .도 안되서 remove \<id>하니까 지워졌다.   
