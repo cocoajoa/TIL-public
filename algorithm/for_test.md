@@ -21,6 +21,10 @@
 
 ### math
 
+### sys
+1. sys.stadin: input 받을 때 씀
+   1. sys.stadin.read ... etc: 한번에 받거나 따로따로 받을때
+
 
 ## 알고리즘
 
