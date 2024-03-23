@@ -24,8 +24,43 @@
 ### sys
 1. sys.stadin: input 받을 때 씀
    1. sys.stadin.read ... etc: 한번에 받거나 따로따로 받을때
+   2. input = sys.stadin.readline : input 쓰는 것과 동일하게 사용가능
+      1. input.strip() : 문자열 받을때 쓰는 방법
 
 
 ## 알고리즘
 
 1. BFS:
+   ```python
+   from collections import deque
+
+   def bfs(start):
+      visited = [0] * length         # 방문 여부 표시할 배열 혹은 리스트
+      stack = deque()                # bfs를 시행시 사용할 스택
+      stack.append([start, memo])    # 시작지점 stack에 넣기 / memoization을 사용이 필요한 경우 리스트로 감싸서 메모할 것 같이 넣기, 간단한 거면 visited에 넣기
+      visited[start] = 1             # 첫 시작은 방문했으니 넣기
+      while stack:
+         point, new_memo = stack.popleft()  # BFS는 선입선출 구조로 진행한다.
+         new_point = point + direction      # 방향에 맞게 이동할 위치 설정
+         if visited[new_point]: continue    # 이미 방문했던 위치라면 패스
+         visited[new_point] = 1 or visited[point] + value # 방문 표시만 할꺼면 1, 이전 값에서 현재 값을 더할거면 후자처럼
+         new_memo += value                  # 메모이제이션 할 것 수정
+         stack.append([new_point, new_memo])# 방문한 곳 스택에 넣기
+
+      return visited                # 원하는 위치나 값 반환  
+   ```
+
+3. 이분탐색:
+   ```python
+   want_value = 100
+   start = 0
+   end = int(1e9)
+   while True:
+      mid = (start + end) // 2
+      if mid == want_value:
+         break
+      elif mid > want_value:
+         end = mid
+      elif mid < want_value:
+         start = mid
+   ```
