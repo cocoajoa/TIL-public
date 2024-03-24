@@ -50,6 +50,33 @@
       return visited                # 원하는 위치나 값 반환  
    ```
 
+2. DFS:
+   ```python
+   # 스택 이용
+   def dfs(start):
+      visited = [0] * length         # 방문 여부 표시할 배열 혹은 리스트
+      stack = []                     # dfs를 시행시 사용할 스택
+      stack.append([start, memo])    # 시작지점 stack에 넣기 / memoization을 사용이 필요한 경우 리스트로 감싸서 메모할 것 같이 넣기, 간단한 거면 visited에 넣기
+      visited[start] = 1             # 첫 시작은 방문했으니 넣기
+      while stack:
+         point, new_memo = stack.pop()      # DFS는 후입선출 구조로 진행한다.
+         new_point = point + direction      # 방향에 맞게 이동할 위치 설정
+         if visited[new_point]: continue    # 이미 방문했던 위치라면 패스
+         visited[new_point] = 1 or visited[point] + value # 방문 표시만 할꺼면 1, 이전 값에서 현재 값을 더할거면 후자처럼
+         new_memo += value                  # 메모이제이션 할 것 수정
+         stack.append([new_point, new_memo])# 방문한 곳 스택에 넣기
+
+      return visited                # 원하는 위치나 값 반환  
+   # 재귀
+   def dfs_a(point, list):            # 담을 위치도 같이 반환하면 더 가벼움
+      if point in list:               # 담았던 것이면 다시 위로
+         return
+      list.append(point)              # 안담았던 것 담기
+      for next_word in graph[point]:
+         dfs_a(next_word, list)       # 재귀 ㄱㄱ
+
+   ```
+
 3. 이분탐색:
    ```python
    want_value = 100
