@@ -4,6 +4,10 @@
 - python -m venv venv : 가상 환경 만들기
 - python manage.py startapp 앱_이름_복수형 : '앱_이름_복수형'로 앱 생성
 - python manage.py runserver : 서버 실행 / ctrl + c로 끄기
+- python manage.py makemigrations : 설계도(models.py의 class) 최종화
+- python manage.py migrate : 설계도대로 DB에 반영
+- python manage.py showmigrations : 마이그레이션 잘됬는지 확인용
+- python manage.py createsuperuser : 데이터 확인 및 테스트용 관리자 계정 생성
 
 
 ## pip
@@ -81,6 +85,7 @@
 
 
 ## apps 폴더
+
 ### urls.py
 - urls.py 생성 후 동일 폴더 views.py에 연결하기
   ```html
@@ -103,6 +108,34 @@
     <!-- 주소는 templates 폴더 내부에 맞게 지정/ templates에 하위폴더 생성함 -->
     return render(request, 'first_apps/index.html')
   ```
+- 받을게 있을때
+  ```html
+  def info(request):
+    <!-- 받는 data의 이름 꼭 필요, html의 데이터 요청하는법 참고 -->
+    data = request.GET.get('message')
+    <!-- dictionary 형태로 저장 -->
+    context ={
+      'whatIWant' = data
+    }
+
+    return render(request, 'first_apps/info.html', context)
+  
+  ```
+
+### models.py
+- 만들 DB 컨텐츠 만들기, 이후 적용을 위해서 migration 필요
+  ```html
+  class Article(models.Model):
+    want_name = models.CharField(max_length=50)
+  ```
+### admin.py
+- 만든 모델을 admin에서 활용하기 위해 연결
+  ```html
+  from .models import 임포트할_이름
+
+  admin.site.register(임포트할_이름)
+
+  ```
 
 ## templates (앱 내부)
 - 최상위 templates 폴더와 구분되게 앱 이름의 폴더 만들고 그 내부에 html 보관
@@ -117,13 +150,42 @@
 
   {% block content %}
   <h1>test case</h1>
+  
 
   {% endblock content %}
   ```
-## html
+
 - static 내에 있는 것 활용하기
   ```html
   {% load static %}
   
   {% static "images/logo.png" %}
+  ```
+- url 이동시키는 법
+  ```html
+  {% url '앱이름:이름' %}
+  ```
+- 받은 context dictionary 사용하는 법
+  ```html
+  <!-- 기본 -->
+  {{ context_내부key }}
+  <!-- 하위로 들어가기 -->
+  {{ key.하위속성 }}
+  <!-- 변수 수정방법 -->
+  {{ key|filter }}
+  {{ key|truncatewords:30 }}
+  ```
+- 코딩처럼 활용하기
+  ```html
+  <!-- 적당히 키워드 입력 후 원하는 것 엔터 -->
+  {% if  %}{% endif %}
+  {% for  in  %}{% endfor %}
+  ```
+- 데이터 요청하는 법
+  ```html
+  <!-- form 사용하기 -->
+  <form action="보내고싶은주소 ex) /catch/" method='원하는발송방식 ex) GET'>
+    <!-- 입력한 데이터에 이름 붙여야함 -->
+    <input type="text", id='message', name='message'>
+  </form>
   ```
