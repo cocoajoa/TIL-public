@@ -9,7 +9,6 @@
 - python manage.py showmigrations : 마이그레이션 잘됬는지 확인용
 - python manage.py createsuperuser : 데이터 확인 및 테스트용 관리자 계정 생성
 
-
 ## pip
 - pip install -r requirements.txt : requirements.txt에 저장된대로 pip install
 - pip freeze > requirements.txt : requirements.txt에 환경(가상 환경)에 저장된 것들 기록
@@ -20,7 +19,9 @@
 ## django
 - django-admin startproject 프로젝트_이름 . : '프로젝트_이름'으로 프로젝트 폴더 생성/  
   . 하는 게 편함, 없으면 디렉토리 내려가서 작업해야함
-
+## 기타
+- deactivate: 가상환경 중지
+- ctrl + c : server 중지
 
 ## project 폴더
 ### settings.py
@@ -73,7 +74,6 @@
   ```html
     ....
   <style>
-      {% block style %}{% endblock style %}
   </style>
   </head>
   <body>
@@ -99,6 +99,9 @@
       <!-- 기본 페이지 설정, views의 index와 연결, url에서 사용할 이름 설정 -->
       path('', views.index, name='index'),
   ]
+      <!-- 주소를 임의의 값으로 설정,int나 str 등등 다양하게 -->
+      path('<int:pk>/', views.detail, name='detail'), 
+
   ```
 ### views.py
 - 기본적인 연결 방식
@@ -121,12 +124,95 @@
     return render(request, 'first_apps/info.html', context)
   
   ```
+- DB에 저장된 내용 연결하기
+  - 모델의 전체 자료 받아오기
+  ```html
+  <!-- 전체 받는거니까 변수는 복수형으로 담자 -->
+  articles = 받을데이터모델.objects.all()
+  context= {
+    'data' = articles,
+  }  
+  ```
+  - 특정 자료만 받아오기/ 주소명 별도로 만들어야하니 urls 참조
+  ```html
+  <!-- urls 주소를 pk로 지정할 것이라 pk 받아와야함 -->
+  def detail(request, pk):
+      <!-- 특정 정보를 받아오는거니 get 그리고 특정하기 위해 pk 값 받아옴 -->
+      article = 받을데이터모델.objects.get(pk=pk)
+      context= {
+        'article': article,
+      }
+  ```
+#### forms.py로 form 이용
+  - 새 데이터 저장할 내용 적기, 아래 create와 같이 사용 필수
+  ```html
+  from .forms import 갖고올폼이름
+  def new(request):
+      form = 갖고올폼이름
+      context= {
+        'form' = form
+      }
+      return render(reqeust, 'first_apps/new.html', context)
+  ```
+  - 빈 공간이거나 오류 표시 및 ModelForm으로 데이터 저장 후 반환
+  ```html
+  from django.shortcuts import render, redirect
+
+  def create(request):
+      form = 갖고올모델폼이름
+      <!-- 모두 유효한 값이면 -->
+      if for.is_valid():
+          article = form.save()
+          return redirect('반환할곳 ex: articles:detail',article.pk) 
+      <!-- 아닌 경우 -->
+      context= {
+        'form'= form
+      }
+      return render(request, 'first_apps/create.html',context)
+  
+  ```
+- 기존 데이터 삭제:
+  ```html
+  def delete(request, pk):
+      <!-- 삭제할 파일 특정 -->
+      article = 삭제할곳의모델이름.objects.get(pk=pk)
+      article.delete()
+      return redirect('first_apps:index')
+  ```
+- 기존 데이터 편집을 수정할 내용 적는데, 아래 update와 같이 사용 필수
+  ```html
+  def edit(request, pk):
+      article= 저장된모델이름.objects.get(pk=pk)
+      form= 수정할모델형식의모델폼(instance=위값_여기선article)
+      context={
+        'article': article,
+        'form': form,
+      } 
+      return render(request, 'first_apps/edit.html', context)
+  ```
+- 수정한 내용이 형식에 맞는지 확인 후 내뱉기
+  ```html
+  def update(request, pk):
+      article= 저장된모델이름.objects.get(pk=pk)
+      <!-- 받은 내용 추가 -->
+      form= 수정할모델형식의모델폼(request.POST, instance=위값_여기선article)
+      if form.is_valid():
+          form.save()
+          return redirect('first_apps:detail', article.pk)
+      context = {
+        'article':article,
+        'form': form,
+      }
+      return render(request, 'articles/edit.html', context)
+
+
+  ```
 
 ### models.py
 - 만들 DB 컨텐츠 만들기, 이후 적용을 위해서 migration 필요
   ```html
   class Article(models.Model):
-    want_name = models.CharField(max_length=50)
+      want_name = models.CharField(max_length=50)
   ```
 ### admin.py
 - 만든 모델을 admin에서 활용하기 위해 연결
@@ -134,6 +220,30 @@
   from .models import 임포트할_이름
 
   admin.site.register(임포트할_이름)
+
+  ```
+### forms.py
+- 폼을 html 바깥에서 구성시켜 연결
+  ```html
+  from django import forms
+  from .models import MyModel
+
+  <!-- DB에 저장 필요 없는 경우 ex)로그인과 같이 조회만 하는 경우 -->
+  class 원하는폼이름(forms.Form):
+  <!-- 모델 같이 구성 -->
+      title = forms.CharField(max_length= 10)
+      <!-- input 외형변경 필요시 widget 사용 -->
+      content = forms.CharField(widget=forms.textarea)
+
+  <!-- DB에 저장 혹은 수정 등이 필요한경우 -->
+  class 원하는폼이름(forms.ModelForm):
+      class Meta:
+          model = 연결할 모델 이름
+          <!-- 모델 내 전부 다 받을 경우 -->
+          fields = '__all__'
+          <!-- 일부만 받을 경우 -->
+          fields = ('title', etc)
+          exclude = ('title', etc)
 
   ```
 
@@ -188,4 +298,17 @@
     <!-- 입력한 데이터에 이름 붙여야함 -->
     <input type="text", id='message', name='message'>
   </form>
+  ```
+  - forms.py 사용시(forms.py 생성 및 views 설정 필요)
+  ```html
+  <!-- GET는 단순조회, POST는 생성,삭제 수정시 사용 -->
+  <form action="{% url '앱이름:views이름' %}" method="POST">
+  {{ form }}
+  <!-- DB에 영향을 줄 경우 토큰값도 같이 줘야 허락해줌-->
+  {% csrf_token %}
+  <input type="submit">
+  </form>
+  {% endblock content %}
+  <!-- form 내부 항목을 p로 감싸는법 -->
+  {{ form.as_p }} 
   ```
