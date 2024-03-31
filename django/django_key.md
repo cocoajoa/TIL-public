@@ -145,32 +145,32 @@
   ```
 #### forms.py로 form 이용
   - 새 데이터 저장할 내용 적기, 아래 create와 같이 사용 필수
-  ```html
-  from .forms import 갖고올폼이름
-  def new(request):
-      form = 갖고올폼이름
-      context= {
-        'form' = form
-      }
-      return render(reqeust, 'first_apps/new.html', context)
-  ```
+    ```html
+    from .forms import 갖고올폼이름
+    def new(request):
+        form = 갖고올폼이름
+        context= {
+          'form' = form
+        }
+        return render(reqeust, 'first_apps/new.html', context)
+    ```
   - 빈 공간이거나 오류 표시 및 ModelForm으로 데이터 저장 후 반환
-  ```html
-  from django.shortcuts import render, redirect
+    ```html
+    from django.shortcuts import render, redirect
 
-  def create(request):
-      form = 갖고올모델폼이름
-      <!-- 모두 유효한 값이면 -->
-      if for.is_valid():
-          article = form.save()
-          return redirect('반환할곳 ex: articles:detail',article.pk) 
-      <!-- 아닌 경우 -->
-      context= {
-        'form'= form
-      }
-      return render(request, 'first_apps/create.html',context)
-  
-  ```
+    def create(request):
+        form = 갖고올모델폼이름
+        <!-- 모두 유효한 값이면 -->
+        if for.is_valid():
+            article = form.save()
+            return redirect('반환할곳 ex: articles:detail',article.pk) 
+        <!-- 아닌 경우 -->
+        context= {
+          'form'= form
+        }
+        return render(request, 'first_apps/create.html',context)
+    
+    ```
 - 기존 데이터 삭제:
   ```html
   def delete(request, pk):
