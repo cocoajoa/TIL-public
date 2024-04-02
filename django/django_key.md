@@ -54,6 +54,11 @@
     BASE_DIR / 'static',
   ]
   ```
+- 기본 user 모델 수정 시 필요함 - accounts의 models.py 및 admin 바꿔줘야함
+  ```html
+  AUTH_USER_MODEL = 'accounts.User'
+  ```
+
 ### urls.py
 - 프로젝트의 urls 대신 앱 urls 사용하도록 조정 <br>
   / 앱 폴더에서 urls.py 만들어야함
@@ -144,32 +149,23 @@
       }
   ```
 #### forms.py로 form 이용
-  - 새 데이터 저장할 내용 적기, 아래 create와 같이 사용 필수
+  - 새 데이터 저장하는 방법
     ```html
     from .forms import 갖고올폼이름
-    def new(request):
-        form = 갖고올폼이름
-        context= {
-          'form' = form
-        }
-        return render(reqeust, 'first_apps/new.html', context)
-    ```
-  - 빈 공간이거나 오류 표시 및 ModelForm으로 데이터 저장 후 반환
-    ```html
-    from django.shortcuts import render, redirect
-
     def create(request):
-        form = 갖고올모델폼이름
-        <!-- 모두 유효한 값이면 -->
-        if for.is_valid():
-            article = form.save()
-            return redirect('반환할곳 ex: articles:detail',article.pk) 
-        <!-- 아닌 경우 -->
-        context= {
-          'form'= form
+        form = 갖고 올 폼 이름
+        if request.method = 'POST:
+            form = 갖고 올 폼 이름(request.POST)
+            if form.is_valid():
+                article = form.save()
+                <!-- 저장한 내용을 확인하려면 아래와 같이 -->
+                return redirect('articles:detail', article.pk)
+        else:
+            form = 갖고 올 폼 이름()
+        context = {
+          'form': form,
         }
-        return render(request, 'first_apps/create.html',context)
-    
+        return render(reqeust, 'articles/request.html', context)
     ```
 - 기존 데이터 삭제:
   ```html
@@ -179,33 +175,47 @@
       article.delete()
       return redirect('first_apps:index')
   ```
-- 기존 데이터 편집을 수정할 내용 적는데, 아래 update와 같이 사용 필수
+- 기존 데이터 편집을 수정할 때
   ```html
-  def edit(request, pk):
+  def update(request, pk):
       article= 저장된모델이름.objects.get(pk=pk)
-      form= 수정할모델형식의모델폼(instance=위값_여기선article)
+      if request.method = 'POST:
+          form = 모델폼(request.POST, instance= article)
+          if form.is_valid():
+              form.save()
+              return redirect('first_apps:detail', article.pk)
+      else:
+          form = 모델폼(instance= article)
       context={
         'article': article,
         'form': form,
       } 
-      return render(request, 'first_apps/edit.html', context)
+      return render(request, 'first_apps/update.html', context)
   ```
-- 수정한 내용이 형식에 맞는지 확인 후 내뱉기
+- 로그인 만들기
   ```html
-  def update(request, pk):
-      article= 저장된모델이름.objects.get(pk=pk)
-      <!-- 받은 내용 추가 -->
-      form= 수정할모델형식의모델폼(request.POST, instance=위값_여기선article)
-      if form.is_valid():
-          form.save()
-          return redirect('first_apps:detail', article.pk)
+  from django.contrib.auth import login as auth_login
+  from django.contrib.auth import logout as logout
+  from django.contrib.auth.form import AuthenticationForm
+  def login(request):
+      if request.method == 'POST':
+          form = AuthenticationForm(request, request.method)
+          if form.is_valid():
+              user = form.get_user()
+              auth_login(request, user)
+              return redirect('accounts:index')
+      else:
+          form = AuthenticationForm()
       context = {
-        'article':article,
-        'form': form,
-      }
-      return render(request, 'articles/edit.html', context)
-
-
+          'form': form,
+      } 
+      return render(request, 'accounts/login.html', context)
+  ```
+- 로그아웃 만들기
+  ```html
+  def logout(request):
+      auth_logout(request)
+      return redirect('accounts:index')
   ```
 
 ### models.py
@@ -214,13 +224,26 @@
   class Article(models.Model):
       want_name = models.CharField(max_length=50)
   ```
+- 원하는 대로 USER 설정하기
+  ```html
+  from django.contrib.auth.models import AbstractUser
+  class User(AbstractUser):
+      <!-- 수정 안하면 default 값으로 진행됨 -->
+      pass
+  ```
 ### admin.py
 - 만든 모델을 admin에서 활용하기 위해 연결
   ```html
   from .models import 임포트할_이름
 
   admin.site.register(임포트할_이름)
+  ```
+- 유저 모델 수정시
+  ```html
+  from django.contrib.auth.admin import UserAdmin
+  from .models import User
 
+  admin.site.register(User, UserAdmin)
   ```
 ### forms.py
 - 폼을 html 바깥에서 구성시켜 연결
