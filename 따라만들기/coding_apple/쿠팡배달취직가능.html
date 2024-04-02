@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="overlay"></div>
+  <div class="card"></div>
+</div>
+
+<script>
+  var container = document.querySelector('.container');
+  var overlay = document.querySelector('.overlay');
+  container.addEventListener('mousemove', function(e){
+    var x = e.offsetX
+    var y = e.offsetY
+    var rotateY = -1/5 * x + 20
+    var rotateX = 4/30 * y - 20
+    overlay.style.backgroundPosition = `${x/5 + y/5}%`
+    // overlay.style = 'background-position : ${x/5 + y/5}%'
+    container.style =  `transform : perspective(350px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)` 
+  })
+  
+  container.addEventListener('mouseout', function(){
+  overlay.style.filter = 'opacity()'; // filter 속성을 직접 설정
+  container.style.transform = 'perspective(350px) rotateY(0deg) rotateX(0deg)'; // transform 속성을 직접 설정
+});
+
+</script>
+
+
+<style>
+  .container {
+    width: 220px;
+    height: 310px;
+  }
+  .overlay {
+    position: absolute;
+    width: 220px;
+    height: 310px;
+    background: linear-gradient(105deg,
+      transparent 50%,
+      rgba(255, 219, 112, 0.8) 45%,
+      rgba(132, 50, 255, 0.6) 50%,
+      transparent 54%);
+    filter: brightness(1.2) opacity(0.8);
+    mix-blend-mode: color-dodge;
+    background-size: 150% 150%;
+    background-position: 100%;
+    transition: all 0.1s;
+  }
+  .card {
+    width: 220px;
+    height: 310px;
+    background-image: url(images/blue_eyes.png);
+    background-size: cover;
+  }
+
+</style>
