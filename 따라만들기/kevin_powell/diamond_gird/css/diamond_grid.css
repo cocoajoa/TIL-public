@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+img {
+  max-width: 100%;
+}
+
+.gallery {
+  /* 커스텀 속성 만드는 생성자 -- 나머지 img-size는 단순 정의 */
+  --img-size: calc(100px - .25rem / 2);
+  display: grid;
+  gap: 1rem;
+  
+  /* repeat(앞, 뒤) 앞은 반복 횟수, 뒤는 크기  */
+  /* var() 해당 커스텀 속성을 변수로 받게 한다.  */
+  grid-template-columns: repeat(6, var(--img-size));
+  grid-template-rows: repeat(6, var(--img-size));
+  
+  img {
+    /* 크기를 비율대로 만지고 싶을때 사용, 1 대 1 비율 사각형 */
+    aspect-ratio: 1;
+    /* 이미지나 비디오를 크기에 맞게 맞추는 것 */
+    object-fit: cover;
+    grid-column: span 2;
+    /* svg 좌표로 컷팅 */
+    clip-path: path('M 80 20 L 80 20 C 100 0 100 0 120 20 L 180 80 C 200 100 200 100 180 120 L 120 180 C 100 200 100 200 80 180 L 20 120 C 0 100 0 100 20 80 L 80 20 ');
+    transition: 
+      filter 500ms,
+      clip-path 500ms;
+    /* E:nth-of-type(n): E의 같은 속성의 n번째에 적용 */
+    /* &는 부모를 의미한다. */
+    &:nth-of-type(4){
+      grid-column: 2 / span 2;
+    }
+    &:nth-of-type(9){
+      grid-column: 2 / span 2;
+    }
+    &:nth-of-type(14){
+      grid-column: 2 / span 2;
+    }
+    &:hover {
+    z-index: 100;
+    clip-path: path('M 0 20 L 0 20 C 0 0 0 0 20 0 L 180 0 C 200 0 200 0 200 20 L 200 180 C 200 200 200 200 180 200 L 20 200 C 0 200 0 200 0 180 L 0 20');
+    
+    &:not(:hover) {
+      animation: zIndexHack 500ms;
+    }
+    
+
+
+    }
+  }
+}
+
+.gallery:hover > img {
+  filter: brightness(.5) saturate(.5);
+}
+
+.gallery > img:hover {
+  filter: brightness(1) saturate(1);
+}
+
+
+@keyframes zIndexHack {
+  0%, 100% {
+    z-index: 10;
+  }
+}
