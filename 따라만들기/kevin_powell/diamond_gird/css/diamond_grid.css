@@ -50,20 +50,19 @@ img {
       animation: zIndexHack 500ms;
     }
     
-
-
     }
   }
 }
 
+/* 갤러리 클래스에서 호버시 하위 img들 */
 .gallery:hover > img {
   filter: brightness(.5) saturate(.5);
 }
 
+/* 호버시 선택한 이미지 설정 */
 .gallery > img:hover {
   filter: brightness(1) saturate(1);
 }
-
 
 @keyframes zIndexHack {
   0%, 100% {
