@@ -153,7 +153,6 @@
     ```html
     from .forms import 갖고올폼이름
     def create(request):
-        form = 갖고 올 폼 이름
         if request.method = 'POST:
             form = 갖고 올 폼 이름(request.POST)
             if form.is_valid():
@@ -182,7 +181,10 @@
       if request.method = 'POST:
           form = 모델폼(request.POST, instance= article)
           if form.is_valid():
-              form.save()
+              <!-- user연결시 commit 내용 추가-->
+              article = form.save(commit = false)
+              article.user = request.user
+              article.save()
               return redirect('first_apps:detail', article.pk)
       else:
           form = 모델폼(instance= article)
